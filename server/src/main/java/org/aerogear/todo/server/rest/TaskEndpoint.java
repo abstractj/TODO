@@ -40,14 +40,13 @@ import java.util.List;
 @TransactionAttribute
 @RolesAllowed({"simple","admin"})
 public class TaskEndpoint {
-    @PersistenceContext(type = PersistenceContextType.EXTENDED)
+    @PersistenceContext
     private EntityManager em;
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Task create(Task entity) {
-        em.joinTransaction();
         em.persist(entity);
         return entity;
     }
@@ -57,7 +56,6 @@ public class TaskEndpoint {
     @Produces(MediaType.APPLICATION_JSON)
     public void deleteById(@PathParam("id")
                            Long id) {
-        em.joinTransaction();
         Task result = em.find(Task.class, id);
         em.remove(result);
     }
@@ -85,7 +83,6 @@ public class TaskEndpoint {
     public Task update(@PathParam("id")
                        Long id, Task entity) {
         entity.setId(id);
-        em.joinTransaction();
         entity = em.merge(entity);
         return entity;
     }

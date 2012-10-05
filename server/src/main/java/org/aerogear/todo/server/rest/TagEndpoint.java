@@ -41,14 +41,13 @@ import java.util.List;
 @TransactionAttribute
 @RolesAllowed({"admin"})
 public class TagEndpoint {
-    @PersistenceContext(type = PersistenceContextType.EXTENDED)
+    @PersistenceContext
     private EntityManager em;
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Tag create(Tag entity) {
-        em.joinTransaction();
         em.persist(entity);
         return entity;
     }
@@ -58,7 +57,6 @@ public class TagEndpoint {
     @Produces(MediaType.APPLICATION_JSON)
     public List<Long> deleteById(@PathParam("id")
                                  Long id) {
-        em.joinTransaction();
 
         //@TODO extract it to another class
         @SuppressWarnings("unchecked")
@@ -102,7 +100,6 @@ public class TagEndpoint {
     public Tag update(@PathParam("id")
                       Long id, Tag entity) {
         entity.setId(id);
-        em.joinTransaction();
         entity = em.merge(entity);
         return entity;
     }

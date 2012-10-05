@@ -40,14 +40,13 @@ import java.util.List;
 @TransactionAttribute
 @RolesAllowed({"admin"})
 public class ProjectEndpoint {
-    @PersistenceContext(type = PersistenceContextType.EXTENDED)
+    @PersistenceContext
     private EntityManager em;
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Project create(Project entity) {
-        em.joinTransaction();
         em.persist(entity);
         return entity;
     }
@@ -57,7 +56,6 @@ public class ProjectEndpoint {
     @Produces(MediaType.APPLICATION_JSON)
     public List<Long> deleteById(@PathParam("id")
                                  Long id) {
-        em.joinTransaction();
 
         //@TODO extract it to another class
         @SuppressWarnings("unchecked")
@@ -102,7 +100,6 @@ public class ProjectEndpoint {
     public Project update(@PathParam("id")
                           Long id, Project entity) {
         entity.setId(id);
-        em.joinTransaction();
         entity = em.merge(entity);
         return entity;
     }
