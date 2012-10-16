@@ -10,13 +10,13 @@
 		<description>TODO Persistence Unit</description>
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source>
-		<class>org.jboss.picketlink.idm.internal.jpa.DatabaseUser</class>
-		<class>org.jboss.picketlink.idm.internal.jpa.DatabaseUserAttribute</class>
-		<class>org.jboss.picketlink.idm.internal.jpa.DatabaseRole</class>
-		<class>org.jboss.picketlink.idm.internal.jpa.DatabaseRoleAttribute</class>
-		<class>org.jboss.picketlink.idm.internal.jpa.DatabaseGroup</class>
-		<class>org.jboss.picketlink.idm.internal.jpa.DatabaseGroupAttribute</class>
-		<class>org.jboss.picketlink.idm.internal.jpa.DatabaseMembership</class>
+        <class>org.picketlink.idm.internal.jpa.DatabaseUser</class>
+        <class>org.picketlink.idm.internal.jpa.DatabaseUserAttribute</class>
+        <class>org.picketlink.idm.internal.jpa.DatabaseRole</class>
+        <class>org.picketlink.idm.internal.jpa.DatabaseRoleAttribute</class>
+        <class>org.picketlink.idm.internal.jpa.DatabaseGroup</class>
+        <class>org.picketlink.idm.internal.jpa.DatabaseGroupAttribute</class>
+        <class>org.picketlink.idm.internal.jpa.DatabaseMembership</class>
 		<exclude-unlisted-classes>false</exclude-unlisted-classes>
 		<properties>
 			<property

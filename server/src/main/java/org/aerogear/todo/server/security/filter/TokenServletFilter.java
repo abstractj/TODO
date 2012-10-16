@@ -17,8 +17,8 @@
 
 package org.aerogear.todo.server.security.filter;
 
-import org.jboss.picketlink.cdi.authentication.AuthenticationException;
 import org.picketbox.cdi.PicketBoxIdentity;
+import org.picketlink.cdi.authentication.AuthenticationException;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;

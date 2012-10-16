@@ -17,11 +17,11 @@
 package org.aerogear.todo.server.security.config;
 
 import org.jboss.logging.Logger;
-import org.jboss.picketlink.idm.internal.JPAIdentityStore;
-import org.jboss.picketlink.idm.internal.jpa.JPATemplate;
-import org.jboss.picketlink.idm.model.Role;
-import org.jboss.picketlink.idm.model.User;
-import org.jboss.picketlink.idm.spi.IdentityStore;
+import org.picketlink.idm.internal.JPAIdentityStore;
+import org.picketlink.idm.internal.jpa.JPATemplate;
+import org.picketlink.idm.model.Role;
+import org.picketlink.idm.model.User;
+import org.picketlink.idm.spi.IdentityStore;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;

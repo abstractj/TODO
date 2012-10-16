@@ -56,6 +56,13 @@ to work with JBoss EAP 6. It requires you have access to the JBoss EAP 6 maven r
         -->
     </properties>
 
+    <repositories>
+        <repository>
+            <id>cloudbees-snapshot-repository</id>
+            <name>cloudbees-snapshot-repository</name>
+            <url>http://repository-aerogear.forge.cloudbees.com/snapshot/</url>
+        </repository>
+    </repositories>
     <dependencyManagement>
     	
         <dependencies>
@@ -80,12 +87,12 @@ read this as the JBoss stack of the Java EE 6 APIs) -->
     	<dependency>
     		<groupId>org.picketbox</groupId>
     		<artifactId>picketbox-core</artifactId>
-    		<version>5.0.0-2012Sep26</version>
+    		<version>5.0.0-SNAPSHOT</version>
     	</dependency>
     	<dependency>
     		<groupId>org.picketbox</groupId>
     		<artifactId>picketbox-cdi</artifactId>
-    		<version>5.0.0-2012Sep26</version>
+    		<version>5.0.0-SNAPSHOT</version>
     	</dependency>
 		
         <!-- First declare the APIs we depend on and need for compilation.

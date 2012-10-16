@@ -18,10 +18,9 @@
 package org.aerogear.todo.server.security.service;
 
 import org.aerogear.todo.server.security.idm.AeroGearUser;
-import org.aerogear.todo.server.util.PasswordHashing;
-import org.jboss.picketlink.idm.IdentityManager;
-import org.jboss.picketlink.idm.model.Role;
-import org.jboss.picketlink.idm.model.User;
+import org.picketlink.idm.IdentityManager;
+import org.picketlink.idm.model.Role;
+import org.picketlink.idm.model.User;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;

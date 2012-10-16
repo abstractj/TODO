@@ -17,14 +17,12 @@
 
 package org.aerogear.todo.server.security.service;
 
-import static org.aerogear.todo.server.security.exception.ExceptionMessage.*;
-
 import org.aerogear.todo.server.security.exception.HttpSecurityException;
 import org.aerogear.todo.server.util.HttpResponseBuilder;
-import org.jboss.picketlink.cdi.Identity;
-import org.jboss.picketlink.cdi.credential.Credential;
-import org.jboss.picketlink.cdi.credential.LoginCredentials;
 import org.picketbox.core.authentication.credential.UsernamePasswordCredential;
+import org.picketlink.cdi.Identity;
+import org.picketlink.cdi.credential.Credential;
+import org.picketlink.cdi.credential.LoginCredentials;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
