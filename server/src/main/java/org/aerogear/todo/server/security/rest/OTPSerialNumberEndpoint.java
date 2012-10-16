@@ -19,12 +19,12 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.aerogear.todo.server.security.otp;
+package org.aerogear.todo.server.security.rest;
 
 import org.aerogear.todo.server.security.idm.UserInfo;
-import org.aerogear.todo.server.util.Base32;
 import org.picketbox.cdi.PicketBoxIdentity;
 import org.picketbox.core.UserContext;
+import org.picketbox.core.util.Base32;
 import org.picketlink.idm.IdentityManager;
 import org.picketlink.idm.model.Role;
 import org.picketlink.idm.model.User;
@@ -84,11 +84,37 @@ public class OTPSerialNumberEndpoint {
             
             //Just pick the first 10 characters
             serialNumber = serialNumber.substring(0, 10);
+            
+            serialNumber = toHexString(serialNumber.getBytes());
             idmuser.setAttribute("serial", serialNumber);
         }
         userInfo.setSerial(serialNumber);
-        userInfo.setB32(Base32.encode(serialNumber.getBytes()));
+        userInfo.setB32(Base32.encode(hexToAscii(serialNumber).getBytes()));
         
         return userInfo;
+    }
+    
+    private String toHexString(byte[] ba) {
+        StringBuilder str = new StringBuilder();
+        for(int i = 0; i < ba.length; i++)
+            str.append(String.format("%x", ba[i]));
+        return str.toString();
+    }
+    
+    private String hexToAscii(String s) {
+        int n = s.length();
+        StringBuilder sb = new StringBuilder(n / 2);
+        for (int i = 0; i < n; i += 2) {
+          char a = s.charAt(i);
+          char b = s.charAt(i + 1);
+          sb.append((char) ((hexToInt(a) << 4) | hexToInt(b)));
+        }
+        return sb.toString();
+    }
+    private int hexToInt(char ch) {
+        if ('a' <= ch && ch <= 'f') { return ch - 'a' + 10; }
+        if ('A' <= ch && ch <= 'F') { return ch - 'A' + 10; }
+        if ('0' <= ch && ch <= '9') { return ch - '0'; }
+        throw new IllegalArgumentException(String.valueOf(ch));
     }
 }

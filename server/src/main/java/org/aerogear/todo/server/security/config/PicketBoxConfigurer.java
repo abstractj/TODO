@@ -16,6 +16,7 @@
  */
 package org.aerogear.todo.server.security.config;
 
+import org.picketbox.core.authentication.impl.OTPAuthenticationMechanism;
 import org.picketbox.core.config.ConfigurationBuilder;
 import org.picketlink.idm.internal.jpa.JPATemplate;
 
@@ -41,11 +42,14 @@ public class PicketBoxConfigurer {
     @Inject
     private JPATemplate jpaTemplate;
 
+    @Inject
+    private OTPAuthenticationMechanism otpAuthenticationMechanism;
+
     @Produces
     public ConfigurationBuilder produceConfiguration() {
         ConfigurationBuilder builder = new ConfigurationBuilder();
 
-        builder.authentication();
+        builder.authentication().mechanism(otpAuthenticationMechanism);
 
         builder
                 .identityManager()
