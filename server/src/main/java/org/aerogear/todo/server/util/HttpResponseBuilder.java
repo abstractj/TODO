@@ -18,8 +18,7 @@
 package org.aerogear.todo.server.util;
 
 import org.aerogear.todo.server.security.idm.AeroGearCredential;
-import org.jboss.picketlink.cdi.Identity;
-import org.picketbox.cdi.PicketBoxUser;
+import org.picketlink.extensions.core.pbox.PicketBoxIdentity;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -32,7 +31,7 @@ public class HttpResponseBuilder {
     private static final String LOGGED = "true";
 
     @Inject
-    private Identity identity;
+    private PicketBoxIdentity identity;
 
     /**
      * Note: is not recommendable to return username and roles here
@@ -46,10 +45,9 @@ public class HttpResponseBuilder {
         String token = null;
 
         if (identity.isLoggedIn()) {
-            PicketBoxUser user = (PicketBoxUser) identity.getUser();
-            token = user.getSubject().getSession().getId().getId().toString();
-            List<String> roles = user.getSubject().getRoleNames();
-            aeroGearCredential = new AeroGearCredential(user.getId(), LOGGED, roles);
+            token = identity.getUserContext().getSession().getId().getId().toString();
+            List<String> roles = (List<String>) identity.getUserContext().getRoleNames();
+            aeroGearCredential = new AeroGearCredential(identity.getUser().getFirstName(), LOGGED, roles);
         }
 
         return Response.ok(aeroGearCredential).header("Auth-Token", token).build();

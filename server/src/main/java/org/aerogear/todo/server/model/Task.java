@@ -17,7 +17,6 @@
 package org.aerogear.todo.server.model;
 
 import org.aerogear.todo.server.serializer.TaskCustomSerializer;
-import org.aerogear.todo.server.util.DateBuilder;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;

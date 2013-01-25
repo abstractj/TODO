@@ -18,10 +18,11 @@
 package org.aerogear.todo.server.security.service;
 
 import org.aerogear.todo.server.security.idm.AeroGearUser;
-import org.aerogear.todo.server.util.PasswordHashing;
-import org.jboss.picketlink.idm.IdentityManager;
-import org.jboss.picketlink.idm.model.Role;
-import org.jboss.picketlink.idm.model.User;
+import org.picketlink.idm.IdentityManager;
+import org.picketlink.idm.credential.internal.Password;
+import org.picketlink.idm.model.Role;
+import org.picketlink.idm.model.SimpleRole;
+import org.picketlink.idm.model.User;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -36,32 +37,43 @@ public class GrantConfiguration implements IDMHelper.GrantMethods {
 
     private List<Role> list;
 
+    /**
+     * This method specifies which roles will be applied to {@link AeroGearUser}
+     *
+     * @param roles Array of roles
+     * @return builder implementation
+     */
     public GrantConfiguration roles(String[] roles) {
         list = new ArrayList<Role>();
         for (String role : roles) {
-            Role newRole = identityManager.createRole(role);
+            Role newRole = identityManager.getRole(role);
+            if (newRole == null) {
+                newRole = new SimpleRole(role);
+                identityManager.add(newRole);
+            }
             list.add(newRole);
         }
         return this;
     }
 
     /**
-     * Passing null here because the api doesn' allows me to have user without a group
+     * This method applies roles specified on {@link IDMHelper#grant(String...)}
      *
-     * @param user
+     * @param aeroGearUser represents a simple user's implementation to hold credentials.
      */
     @Override
-    public void to(AeroGearUser user) {
+    public void to(AeroGearUser aeroGearUser) {
 
-        User picketLinkUser = identityManager.createUser(user.getUsername());
-        user.setEmail(picketLinkUser.getEmail());
-        user.setFirstname(picketLinkUser.getFirstName());
-        user.setLastname(picketLinkUser.getLastName());
+        User picketLinkUser = identityManager.getUser(aeroGearUser.getUsername());
 
-        identityManager.updatePassword(picketLinkUser, user.getPassword());
+        /*
+         * Disclaimer: PlainTextPassword will encode passwords in SHA-512 with SecureRandom-1024 salt
+         * See http://lists.jboss.org/pipermail/security-dev/2013-January/000650.html for more information
+         */
+        identityManager.updateCredential(picketLinkUser, new Password(aeroGearUser.getPassword()));
 
         for (Role role : list) {
-            identityManager.grantRole(role, picketLinkUser, null);
+            identityManager.grantRole(picketLinkUser, role);
         }
 
     }

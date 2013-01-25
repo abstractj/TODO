@@ -17,27 +17,24 @@
 
 package org.aerogear.todo.server.security.service;
 
-import static org.aerogear.todo.server.security.exception.ExceptionMessage.*;
-
 import org.aerogear.todo.server.security.exception.HttpSecurityException;
 import org.aerogear.todo.server.util.HttpResponseBuilder;
-import org.jboss.picketlink.cdi.Identity;
-import org.jboss.picketlink.cdi.credential.Credential;
-import org.jboss.picketlink.cdi.credential.LoginCredentials;
 import org.picketbox.core.authentication.credential.UsernamePasswordCredential;
+import org.picketlink.Identity;
+import org.picketlink.extensions.core.pbox.LoginCredential;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.core.Response;
 
 @ApplicationScoped
-public class AuthenticationManager implements Credential {
+public class AuthenticationManager {
 
     private String username;
     private String password;
 
     @Inject
-    private LoginCredentials credential;
+    private LoginCredential credential;
 
     @Inject
     private Identity identity;
@@ -49,7 +46,7 @@ public class AuthenticationManager implements Credential {
         this.username = username;
         this.password = password;
 
-        credential.setCredential(this);
+        credential.setCredential(new UsernamePasswordCredential(username, password));
         this.identity.login();
 
         if (!this.identity.isLoggedIn())
@@ -63,10 +60,5 @@ public class AuthenticationManager implements Credential {
         if (identity.isLoggedIn()) {
             identity.logout();
         }
-    }
-
-    @Override
-    public Object getValue() {
-        return new UsernamePasswordCredential(username, password);
     }
 }

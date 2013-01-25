@@ -1,36 +1,46 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<persistence
-	xmlns="http://java.sun.com/xml/ns/persistence"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	version="2.0"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
-	<persistence-unit
-		name="todo-default"
-		transaction-type="JTA">
-		<description>TODO Persistence Unit</description>
-		<provider>org.hibernate.ejb.HibernatePersistence</provider>
-		<jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source>
-		<class>org.jboss.picketlink.idm.internal.jpa.DatabaseUser</class>
-		<class>org.jboss.picketlink.idm.internal.jpa.DatabaseUserAttribute</class>
-		<class>org.jboss.picketlink.idm.internal.jpa.DatabaseRole</class>
-		<class>org.jboss.picketlink.idm.internal.jpa.DatabaseRoleAttribute</class>
-		<class>org.jboss.picketlink.idm.internal.jpa.DatabaseGroup</class>
-		<class>org.jboss.picketlink.idm.internal.jpa.DatabaseGroupAttribute</class>
-		<class>org.jboss.picketlink.idm.internal.jpa.DatabaseMembership</class>
-		<exclude-unlisted-classes>false</exclude-unlisted-classes>
-		<properties>
-			<property
-				name="hibernate.hbm2ddl.auto"
-				value="create-drop"/>
-			<property
-				name="hibernate.show_sql"
-				value="true"/>
-			<property
-				name="hibernate.format_sql"
-				value="true"/>
-			<property
-				name="hibernate.transaction.flush_before_completion"
-				value="true"/>
-		</properties>
-	</persistence-unit>
+<!--~
+  ~ JBoss, Home of Professional Open Source
+  ~ Copyright Red Hat, Inc., and individual contributors
+  ~ by the @authors tag. See the copyright.txt in the distribution for a
+  ~ full listing of individual contributors.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+    <persistence-unit name="picketbox-default"
+                      transaction-type="JTA">
+        <description>PicketBox Persistence Unit</description>
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source>
+
+        <class>org.picketlink.idm.jpa.schema.IdentityObject</class>
+        <class>org.picketlink.idm.jpa.schema.PartitionObject</class>
+        <class>org.picketlink.idm.jpa.schema.RelationshipObject</class>
+        <class>org.picketlink.idm.jpa.schema.RelationshipIdentityObject</class>
+        <class>org.picketlink.idm.jpa.schema.RelationshipObjectAttribute</class>
+        <class>org.picketlink.idm.jpa.schema.IdentityObjectAttribute</class>
+        <class>org.picketlink.idm.jpa.schema.CredentialObject</class>
+        <class>org.picketlink.idm.jpa.schema.CredentialObjectAttribute</class>
+
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+        <properties>
+            <property name="hibernate.hbm2ddl.auto" value="create-drop" />
+            <property name="hibernate.show_sql" value="true" />
+            <property name="hibernate.format_sql" value="true" />
+            <property name="hibernate.transaction.flush_before_completion"
+                      value="true" />
+        </properties>
+    </persistence-unit>
 </persistence>

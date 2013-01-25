@@ -17,7 +17,6 @@
 
 package org.aerogear.todo.server.security.idm;
 
-import org.aerogear.todo.server.util.PasswordHashing;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 import javax.xml.bind.annotation.XmlRootElement;

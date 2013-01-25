@@ -54,6 +54,7 @@ to work with JBoss EAP 6. It requires you have access to the JBoss EAP 6 maven r
         <!--
         <javaee6.spec.version>3.0.0.Beta1-redhat-1</javaee6.spec.version>
         -->
+        <picketlink-extensions.version>3.0.0-2013Jan24</picketlink-extensions.version>
     </properties>
 
     <dependencyManagement>
@@ -75,18 +76,12 @@ read this as the JBoss stack of the Java EE 6 APIs) -->
     </dependencyManagement>
 
     <dependencies>
-		
-		<!-- PicketBox CDI -->
-    	<dependency>
-    		<groupId>org.picketbox</groupId>
-    		<artifactId>picketbox-core</artifactId>
-    		<version>5.0.0-2012Sep26</version>
-    	</dependency>
-    	<dependency>
-    		<groupId>org.picketbox</groupId>
-    		<artifactId>picketbox-cdi</artifactId>
-    		<version>5.0.0-2012Sep26</version>
-    	</dependency>
+
+        <dependency>
+            <groupId>org.picketlink.extensions</groupId>
+            <artifactId>picketlink-extensions-core</artifactId>
+            <version>${picketlink-extensions.version}</version>
+        </dependency>
 		
         <!-- First declare the APIs we depend on and need for compilation.
  All of them are provided by JBoss -->
