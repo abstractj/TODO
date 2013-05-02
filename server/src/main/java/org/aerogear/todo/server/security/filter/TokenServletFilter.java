@@ -29,8 +29,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebFilter(filterName = "TokenServletFilter", urlPatterns = "/*")
-@ApplicationScoped
+//@WebFilter(filterName = "TokenServletFilter", urlPatterns = "/*")
+//@ApplicationScoped
 public class TokenServletFilter implements Filter {
 
     private static final String AUTH_PATH = "/auth/";
