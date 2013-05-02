@@ -17,8 +17,8 @@
 package org.aerogear.todo.server.rest;
 
 import org.aerogear.todo.server.model.Task;
-import org.picketlink.extensions.core.pbox.authorization.RolesAllowed;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.persistence.EntityManager;
@@ -39,7 +39,7 @@ import java.util.List;
 @TransactionAttribute
 @RolesAllowed({"simple", "admin"})
 public class TaskEndpoint {
-    @PersistenceContext
+    @PersistenceContext(unitName = "todo-default")
     private EntityManager em;
 
     @POST
@@ -54,7 +54,7 @@ public class TaskEndpoint {
     @Path("/{id:[0-9][0-9]*}")
     @Produces(MediaType.APPLICATION_JSON)
     public void deleteById(@PathParam("id")
-                           Long id) {
+    Long id) {
         Task result = em.find(Task.class, id);
         em.remove(result);
     }
@@ -63,7 +63,7 @@ public class TaskEndpoint {
     @Path("/{id:[0-9][0-9]*}")
     @Produces(MediaType.APPLICATION_JSON)
     public Task findById(@PathParam("id")
-                         Long id) {
+    Long id) {
         return em.find(Task.class, id);
     }
 
@@ -80,7 +80,7 @@ public class TaskEndpoint {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Task update(@PathParam("id")
-                       Long id, Task entity) {
+    Long id, Task entity) {
         entity.setId(id);
         entity = em.merge(entity);
         return entity;

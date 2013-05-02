@@ -1,6 +1,6 @@
-/*
+/**
  * JBoss, Home of Professional Open Source
- * Copyright Red Hat Inc., and individual contributors
+ * Copyright Red Hat, Inc., and individual contributors
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -14,11 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.aerogear.todo.server.security.config;
 
-import org.jboss.logging.Logger;
 import org.picketlink.idm.IdentityManager;
-import org.picketlink.idm.credential.internal.Password;
+import org.picketlink.idm.credential.Password;
 import org.picketlink.idm.model.Role;
 import org.picketlink.idm.model.SimpleRole;
 import org.picketlink.idm.model.SimpleUser;
@@ -31,9 +31,8 @@ import javax.inject.Inject;
 
 @Singleton
 @Startup
-public class PicketLinkLoadUsers {
+public class PicketLinkDefaultUsers {
 
-    private static final Logger LOGGER = Logger.getLogger(PicketLinkLoadUsers.class);
 
     @Inject
     private IdentityManager identityManager;
@@ -45,33 +44,28 @@ public class PicketLinkLoadUsers {
     @PostConstruct
     public void create() {
 
-        buildNewUser("john", "john@doe.org", "John", "Doe", "123", "admin");
-        buildNewUser("jane", "jane@doe.org", "Jane", "Doe", "123", "simple");
-    }
+        User user = new SimpleUser("john");
 
-    private User buildNewUser(String username, String email, String firstname, String lastname, String password, String role) {
-
-        User user = new SimpleUser(username);
-
-        user.setEmail(email);
-        user.setFirstName(firstname);
-        user.setLastName(lastname);
+        user.setEmail("john@doe.com");
+        user.setFirstName("John");
+        user.setLastName("Doe");
 
         /*
          * Note: Password will be encoded in SHA-512 with SecureRandom-1024 salt
          * See http://lists.jboss.org/pipermail/security-dev/2013-January/000650.html for more information
          */
-
         this.identityManager.add(user);
-        this.identityManager.updateCredential(user, new Password(password));
+        this.identityManager.updateCredential(user, new Password("123"));
 
-        Role simpleRole = new SimpleRole(role);
+        Role roleDeveloper = new SimpleRole("simple");
+        Role roleAdmin = new SimpleRole("admin");
 
-        this.identityManager.add(simpleRole);
+        this.identityManager.add(roleDeveloper);
+        this.identityManager.add(roleAdmin);
 
-        identityManager.grantRole(user, simpleRole);
+        identityManager.grantRole(user, roleDeveloper);
+        identityManager.grantRole(user, roleAdmin);
 
-        return user;
     }
 
 }

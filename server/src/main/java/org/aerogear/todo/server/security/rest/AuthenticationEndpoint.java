@@ -16,19 +16,23 @@
  */
 package org.aerogear.todo.server.security.rest;
 
-import org.aerogear.todo.server.security.idm.AeroGearUser;
-import org.aerogear.todo.server.security.service.AuthenticationManager;
-import org.aerogear.todo.server.security.service.IDMHelper;
+import org.aerogear.todo.server.util.HttpResponse;
+import org.jboss.aerogear.security.auth.AuthenticationManager;
+import org.jboss.aerogear.security.auth.Roles;
+import org.jboss.aerogear.security.auth.Token;
+import org.jboss.aerogear.security.authz.IdentityManagement;
+import org.jboss.aerogear.security.model.AeroGearUser;
 import org.jboss.logging.Logger;
 
 import javax.ejb.Stateless;
+import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import java.util.List;
 
 /**
  * <p>JAX-RS Endpoint to authenticate users.</p>
@@ -45,17 +49,27 @@ public class AuthenticationEndpoint {
     private AuthenticationManager authenticationManager;
 
     @Inject
-    private IDMHelper idm;
+    private IdentityManagement configuration;
+
+    @Inject
+    @Roles
+    private Instance<List<String>> roles;
+
+    @Inject
+    @Token
+    private Instance<String> token;
 
     @POST
-    @Path("/register")
+    @Path("/enroll")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response register(final AeroGearUser user) {
+    public HttpResponse register(final AeroGearUser aeroGearUser) {
 
         //TODO it should be done by admin screen
-        idm.grant(user.getRole()).to(user);
+        configuration.create(aeroGearUser);
+        configuration.grant(aeroGearUser.getRole()).to(aeroGearUser);
+        authenticationManager.login(aeroGearUser);
 
-        return authenticationManager.login(user.getUsername(), user.getPassword());
+        return createResponse(aeroGearUser);
 
     }
 
@@ -63,11 +77,13 @@ public class AuthenticationEndpoint {
     @Path("/login")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response login(AeroGearUser user) {
+    public HttpResponse login(AeroGearUser aeroGearUser) {
 
         LOGGER.debug("Logged in!");
 
-        return authenticationManager.login(user.getUsername(), user.getPassword());
+        authenticationManager.login(aeroGearUser);
+
+        return createResponse(aeroGearUser);
 
     }
 
@@ -78,4 +94,8 @@ public class AuthenticationEndpoint {
         authenticationManager.logout();
     }
 
+
+    private HttpResponse createResponse(AeroGearUser aeroGearUser) {
+        return new HttpResponse(aeroGearUser.getUsername(), roles.get());
+    }
 }

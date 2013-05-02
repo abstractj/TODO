@@ -16,6 +16,8 @@
  */
 package org.aerogear.todo.server.util;
 
+import org.picketlink.annotations.PicketLink;
+
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
 import javax.persistence.EntityManager;
@@ -35,11 +37,16 @@ import java.util.logging.Logger;
  * </pre>
  */
 public class Resources {
-    // use @SuppressWarnings to tell IDE to ignore warnings about field not being referenced directly
+
+    @Produces
+    @PersistenceContext(unitName = "todo-default")
+    private EntityManager em;
+
     @SuppressWarnings("unused")
     @Produces
-    @PersistenceContext
-    private EntityManager em;
+    @PicketLink
+    @PersistenceContext(unitName = "picketlink-default")
+    private EntityManager picketLinkEntityManager;
 
     @Produces
     public Logger produceLog(InjectionPoint injectionPoint) {

@@ -18,8 +18,8 @@ package org.aerogear.todo.server.rest;
 
 import org.aerogear.todo.server.model.Tag;
 import org.aerogear.todo.server.model.Task;
-import org.picketlink.extensions.core.pbox.authorization.RolesAllowed;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.persistence.EntityManager;
@@ -40,7 +40,7 @@ import java.util.List;
 @TransactionAttribute
 @RolesAllowed({"admin"})
 public class TagEndpoint {
-    @PersistenceContext
+    @PersistenceContext(unitName = "todo-default")
     private EntityManager em;
 
     @POST
@@ -55,7 +55,7 @@ public class TagEndpoint {
     @Path("/{id:[0-9][0-9]*}")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Long> deleteById(@PathParam("id")
-                                 Long id) {
+    Long id) {
 
         //@TODO extract it to another class
         @SuppressWarnings("unchecked")
@@ -79,7 +79,7 @@ public class TagEndpoint {
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed({"admin", "simple"})
     public Tag findById(@PathParam("id")
-                        Long id) {
+    Long id) {
         return em.find(Tag.class, id);
     }
 
@@ -97,7 +97,7 @@ public class TagEndpoint {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Tag update(@PathParam("id")
-                      Long id, Tag entity) {
+    Long id, Tag entity) {
         entity.setId(id);
         entity = em.merge(entity);
         return entity;

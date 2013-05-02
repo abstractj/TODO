@@ -88,6 +88,11 @@ This application aims to show role authorization control based on PicketBox and 
 * CRUD (*Create, read, update and delete*) Tasks
 * R (*Read*)  Projects and Tags
 
+# Testing it
+
+curl -H "Accept: application/json" -H "Content-type: application/json" -X POST http://localhost:8080/todo-server/auth/login -d '{"username":"john","password":"123"}'
+
+curl -H "Accept: application/json" -H "Content-type: application/json" --header "Auth-Token: meh" -X GET http://localhost:8080/todo-server/tags
 
 Notes
 ------

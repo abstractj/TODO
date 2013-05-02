@@ -17,8 +17,8 @@
 
 package org.aerogear.todo.server.security.exception;
 
-import org.apache.deltaspike.security.api.authorization.AccessDeniedException;
-import org.apache.deltaspike.security.api.authorization.SecurityViolation;
+import org.picketlink.deltaspike.security.api.authorization.AccessDeniedException;
+import org.picketlink.deltaspike.security.api.authorization.SecurityViolation;
 
 import java.util.HashSet;
 import java.util.Set;

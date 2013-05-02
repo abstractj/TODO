@@ -17,11 +17,7 @@
 
 package org.aerogear.todo.server.security.filter;
 
-import org.picketlink.authentication.AuthenticationException;
-import org.picketlink.extensions.core.pbox.PicketBoxIdentity;
-
 import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -43,8 +39,8 @@ public class TokenServletFilter implements Filter {
 
     private FilterConfig config;
 
-    @Inject
-    private PicketBoxIdentity identity;
+//    @Inject
+//    private PicketBoxIdentity identity;
 
     @Override
     public void init(FilterConfig config) throws ServletException {
@@ -60,7 +56,7 @@ public class TokenServletFilter implements Filter {
         String path = httpServletRequest.getRequestURI();
         String token = httpServletRequest.getHeader(AUTH_TOKEN);
 
-        if (!tokenIsValid(token) && (path.contains(LOGOUT_PATH) || !path.contains(AUTH_PATH))) {
+        if ((path.contains(LOGOUT_PATH) || !path.contains(AUTH_PATH))) {
             httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         } else {
             filterChain.doFilter(new XSSServletRequestWrapper(httpServletRequest), servletResponse);
@@ -70,20 +66,20 @@ public class TokenServletFilter implements Filter {
     }
 
     //TODO maybe provide a class for it don't hurt
-    private boolean tokenIsValid(String token) {
-
-        boolean valid = false;
-
-        if (token != null && !token.isEmpty()) {
-            try {
-                valid = identity.restoreSession(token);
-            } catch (AuthenticationException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return valid;
-    }
+//    private boolean tokenIsValid(String token) {
+//
+//        boolean valid = false;
+//
+//        if (token != null && !token.isEmpty()) {
+//            try {
+////                valid = identity.restoreSession(token);
+//            } catch (AuthenticationException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//        return valid;
+//    }
 
     @Override
     public void destroy() {

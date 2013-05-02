@@ -17,8 +17,7 @@
 
 package org.aerogear.todo.server.security.exception;
 
-import org.apache.deltaspike.core.api.exception.control.event.ExceptionToCatchEvent;
-import org.apache.deltaspike.security.api.authorization.AccessDeniedException;
+
 
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
@@ -30,29 +29,33 @@ import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 
 @Provider
 public class HttpExceptionMapper implements ExceptionMapper<Throwable> {
-
-    @Inject
-    private Event<ExceptionToCatchEvent> event;
-
     @Override
-    public Response toResponse(Throwable exception) {
-
-        ExceptionToCatchEvent exceptionToCatchEvent = new ExceptionToCatchEvent(exception);
-        try {
-            event.fire(exceptionToCatchEvent);
-        } catch (Throwable t) {
-            Throwable exceptionCause = t.getCause();
-            if (exceptionCause instanceof AccessDeniedException) {
-                return Response.status(UNAUTHORIZED)
-                        .entity(ExceptionMessage.AUTHENTICATION_FAILED.toString())
-                        .build();
-            } else {
-                return Response.status(Response.Status.BAD_REQUEST).build();
-            }
-
-        }
-
-
-        return Response.ok().build();
+    public Response toResponse(Throwable throwable) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
+
+//    @Inject
+//    private Event<ExceptionToCatchEvent> event;
+//
+//    @Override
+//    public Response toResponse(Throwable exception) {
+//
+//        ExceptionToCatchEvent exceptionToCatchEvent = new ExceptionToCatchEvent(exception);
+//        try {
+//            event.fire(exceptionToCatchEvent);
+//        } catch (Throwable t) {
+//            Throwable exceptionCause = t.getCause();
+//            if (exceptionCause instanceof AccessDeniedException) {
+//                return Response.status(UNAUTHORIZED)
+//                        .entity(ExceptionMessage.AUTHENTICATION_FAILED.toString())
+//                        .build();
+//            } else {
+//                return Response.status(Response.Status.BAD_REQUEST).build();
+//            }
+//
+//        }
+//
+//
+//        return Response.ok().build();
+//    }
 }
